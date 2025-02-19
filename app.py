@@ -171,7 +171,7 @@ def playlists():
     userPlaylists = getUserPlaylist()
     playlistHTML = "<h1>Your Playlists:</h1><ul>"
     for playlist in userPlaylists:
-        playlistHTML += f"<li><a href = '/analyze/{playlist["id"]}'>{playlist["name"]}</a></li>"
+        playlistHTML += f"<li><a href = '/analyze/{playlist['id']}'>{playlist['name']}</a></li>"
     playlistHTML += "</ul>"
     return playlistHTML
 
@@ -195,7 +195,7 @@ def artistTracks(artistID):
     tracks = artistTopTracks(artistID)
     trackHTML = "<h1>Top Tracks:</h1><ul>"
     for i, track in enumerate(tracks, start = 1):
-        trackHTML += f'<li>{i}. {track["name"]}</li>'
+        trackHTML += f'<li>{i}. {track['name']}</li>'
     trackHTML += "</ul>"
     return trackHTML
 
