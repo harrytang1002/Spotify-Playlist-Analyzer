@@ -20,10 +20,10 @@ CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 REDIRECT_URI = "https://spotify-playlist-analyzer-tgt7.onrender.com/callback"
 AUTH_URL = "https://accounts.spotify.com/authorize"
 SCOPE = "user-read-private user-read-email playlist-read-private"
-CODE_VERIFIER = secrets.token_urlsafe(64)
-CODE_CHALLENGE = base64.urlsafe_b64encode(
-    hashlib.sha256(CODE_VERIFIER.encode("utf-8")).digest()
-).rstrip(b'=').decode("utf-8")
+# CODE_VERIFIER = secrets.token_urlsafe(64)
+# CODE_CHALLENGE = base64.urlsafe_b64encode(
+#     hashlib.sha256(CODE_VERIFIER.encode("utf-8")).digest()
+# ).rstrip(b'=').decode("utf-8")
 
 def authURL():
     params = {
@@ -32,7 +32,7 @@ def authURL():
         "scope": SCOPE, 
         "redirect_uri": REDIRECT_URI,
         "code_challenge_method": "S256",
-        "code_challenge": CODE_CHALLENGE
+        "code_challenge": session["code_challenge"]
     }
     return f"{AUTH_URL}?{urlencode(params)}"
 
@@ -44,7 +44,7 @@ def getAccessToken(code):
         "redirect_uri": REDIRECT_URI,
         "client_id": CLIENT_ID,
         "client_secret": CLIENT_SECRET,
-        "code_verifier": CODE_VERIFIER
+        "code_verifier": session["code_verifier"]
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     result = post(url, headers = headers, data = data)
@@ -153,6 +153,11 @@ def index():
 
 @app.route("/login")
 def login():
+    session["code_verifier"] = secrets.token_urlsafe(64)
+    code_challenge = base64.urlsafe_b64encode(
+        hashlib.sha256(session["code_verifier"].encode("utf-8")).digest()
+    ).rstrip(b'=').decode("utf-8")
+    session["code_challenge"] = code_challenge
     return redirect(authURL())
 
 @app.route("/callback")
