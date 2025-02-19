@@ -5,8 +5,7 @@ It provides insights such as tempo, key, mood analysis, popularity scores, and m
 
 ## 🌐 Live Demo
 
-Check out the app here: [Spotify Playlist Analyzer on Render](https://spotify-playlist-analyzer-tgt7.onrender.com)  
-_(Replace the above link with your actual Render URL)_
+Check out the app here: [Spotify Playlist Analyzer on Render](https://spotify-playlist-analyzer-tgt7.onrender.com)
 
 ## 🚀 Features
 
