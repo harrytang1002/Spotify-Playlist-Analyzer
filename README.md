@@ -1,7 +1,7 @@
 # 🎵 Spotify Playlist Analyzer
 
 A Python Flask web app that analyzes Spotify playlists using the Spotify Web API.  
-It provides insights such as tempo, key, mood analysis, popularity scores, and more.
+It provides insights such as artist genres, artist popularity, and more.
 
 ## 🌐 Live Demo
 
