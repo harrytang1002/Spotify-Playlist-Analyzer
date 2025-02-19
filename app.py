@@ -195,7 +195,7 @@ def artistTracks(artistID):
     tracks = artistTopTracks(artistID)
     trackHTML = "<h1>Top Tracks:</h1><ul>"
     for i, track in enumerate(tracks, start = 1):
-        trackHTML += f'<li>{i}. {track['name']}</li>'
+        trackHTML += f'<li>{i}. {track["name"]}</li>'
     trackHTML += "</ul>"
     return trackHTML
 
