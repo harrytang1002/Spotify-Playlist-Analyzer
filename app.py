@@ -94,8 +94,19 @@ def getUserPlaylist():
     url = f"https://api.spotify.com/v1/me/playlists"
     headers = getAuthHeader()
     result = get(url, headers = headers)
-    jsonResult = json.loads(result.content)["items"]
-    return jsonResult
+
+    print(f"Spotify API Status: {result.status_code}")
+    print(f"Spotify API Response: {result.text}")
+
+    if result.status_code != 200:
+        return jsonify({"error": f"Spotify API error: {result.status_code} - {result.text}"})
+
+    try:
+        jsonResult = json.loads(result.content)["items"]
+        return jsonResult
+    except json.JSONDecodeError:
+        print(f"Failed to decode JSON: {result.content}")
+        return jsonify({"error": "Failed to decode Spotify response."}), 500
 
 def getPlaylistTracks(playlistID):
     checkTokenExp()
