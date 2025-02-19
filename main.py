@@ -20,7 +20,6 @@ CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 REDIRECT_URI = "http://localhost:5000/callback"
 AUTH_URL = "https://accounts.spotify.com/authorize"
 SCOPE = "user-read-private user-read-email playlist-read-private"
-ACCESS_TOKEN, TOKEN_EXPIRATION = None, 0
 CODE_VERIFIER = secrets.token_urlsafe(64)
 CODE_CHALLENGE = base64.urlsafe_b64encode(
     hashlib.sha256(CODE_VERIFIER.encode("utf-8")).digest()
@@ -36,23 +35,6 @@ def authURL():
         "code_challenge": CODE_CHALLENGE
     }
     return f"{AUTH_URL}?{urlencode(params)}"
-
-# def getToken():
-#     global ACCESS_TOKEN, TOKEN_EXPIRATION
-#     authString = CLIENT_ID + ":" + CLIENT_SECRET
-#     authBytes = authString.encode("utf-8")
-#     authBase64 = str(base64.b64encode(authBytes), "utf-8")
-#     url = "https://accounts.spotify.com/api/token"
-#     headers = {
-#         "Authorization" : "Basic " + authBase64,
-#         "Content-Type" : "application/x-www-form-urlencoded"
-#     }
-#     data = {"grant_type" : "client_credentials"}
-#     result = post(url, headers = headers, data = data)
-#     jsonResult = json.loads(result.content)
-#     ACCESS_TOKEN = jsonResult["access_token"]
-#     tokenExp = jsonResult["expires_in"]
-#     TOKEN_EXPIRATION = time.time() + tokenExp
 
 def getAccessToken(code):
     url = "https://accounts.spotify.com/api/token"
@@ -114,15 +96,6 @@ def getUserPlaylist():
     result = get(url, headers = headers)
     jsonResult = json.loads(result.content)["items"]
     return jsonResult
-    # playlists = {}
-
-    # for i in range(len(jsonResult)):
-    #     playlists[jsonResult[i]["name"]] = i
-    #     playlists[str(i + 1)] = i
-    #     print(f"{i + 1}. {jsonResult[i]["name"]}")
-    # selectedPlaylist = input("Which playlist would you like to analyze? (playlist name or number is fine): ")
-    # print()
-    # return jsonResult[playlists[selectedPlaylist]]
 
 def getPlaylistTracks(playlistID):
     checkTokenExp()
@@ -133,19 +106,6 @@ def getPlaylistTracks(playlistID):
     result = get(queryUrl, headers = headers)
     jsonResult = json.loads(result.content)["items"]
     return jsonResult
-    # artistIDList = {}
-    # genreMap = defaultdict(lambda:[0])
-
-    # for i in range(len(jsonResult)):
-    #     print(f"{i + 1}. {jsonResult[i]["track"]["name"]} - {', '.join(d["name"] for d in jsonResult[i]["track"]["artists"])}")
-    #     artistID = jsonResult[i]["track"]["artists"][0]["id"]
-    #     artistGenre, artistName, artistPopularity = getArtistGenre(artistID)
-    #     artistIDList[artistName] = artistID
-    #     for genres in artistGenre:
-    #         genreMap[genres][0] += 1
-    #         if [artistName, artistPopularity] not in genreMap[genres]:
-    #             genreMap[genres].append([artistName, artistPopularity])
-    # topPlaylistGenres(genreMap, artistIDList)
 
 def analyzePlaylistGenres(tracks):
     artistIDList = {}
@@ -176,28 +136,6 @@ def topPlaylistGenres(genreMap):
     for genre, data in sorted(genreMap.items(), key=lambda item: item[1][0], reverse=True))
     return sortedGenreMap
 
-    # show users all the genres in their playlist
-    # print(', '.join(genre for genre in list(sortedGenreMap.keys())))
-
-    # top5Genres = list(sortedGenreMap.keys())[:5]
-    # print()
-    # print("Top 5 Genres in Your Playlist:")
-    # for i in range(len(top5Genres)):
-    #     print(f"{i + 1}. {top5Genres[i]}")
-    #     print(', '.join(artist[0] for artist in sortedGenreMap[top5Genres[i]][1:]))
-    #     print()
-    # while True:
-    #     selectedArtist = input("Please enter an artist's name if you would like to view their top tracks (or type 'q' to stop): ")
-    #     if selectedArtist.lower() == "q":
-    #         break
-    #     try:
-    #         songs = artistTopTracks(artistIDList[selectedArtist])
-    #         for i, song in enumerate(songs):
-    #             print(f"{i + 1}. {song["name"]}")
-    #     except KeyError:
-    #         print("Invalid artist name. Please enter the artist's name as shown and try again.")
-
-
 def artistTopTracks(artistID):
     checkTokenExp()
     url = f"https://api.spotify.com/v1/artists/{artistID}/top-tracks"
@@ -207,11 +145,7 @@ def artistTopTracks(artistID):
     result = get(queryUrl, headers = headers)
     jsonResult = json.loads(result.content)["tracks"]
     return jsonResult
-    
-    
-# getToken()
-# playlist = getUserPlaylist("31rc7w4va23j5qxdex27ikg5klve")
-# getPlaylistTracks(playlist["id"])
+
 
 @app.route("/")
 def index():
