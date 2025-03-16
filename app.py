@@ -4,8 +4,8 @@ import os
 import secrets
 from dotenv import load_dotenv
 from flask import Flask, redirect, jsonify, request, session
-from db.SQLite_Database import initDB, storeUserInfo, storePlaylistMetadata
-from spotify_api.Spotify_Client import authURL, getAccessToken, getUserPlaylist, getPlaylistTracks, analyzePlaylistGenres, artistTopTracks
+from db.SQLite_Database import initDB, storeUserInfo, storePlaylistMetadata, getDBConnection
+from spotify_api.Spotify_Client import authURL, getAccessToken, getUserPlaylist, getPlaylistTracks, analyzePlaylistGenres, artistTopTracks, getUserProfile
 
 load_dotenv()
 
@@ -33,7 +33,16 @@ def callback():
     if "code" in request.args:
         code = request.args["code"]
         getAccessToken(code)
-    
+        tokens = {
+            "access_token" : session["access_token"], 
+            "refresh_token" : session["refresh_token"],
+            "token_expiration" : session["token_expiration"]
+        }
+        userProfile = getUserProfile()
+        userPlaylists = getUserPlaylist()
+        storeUserInfo(userProfile, tokens)
+        storePlaylistMetadata(userProfile["id"], userPlaylists)
+
     return redirect("/playlists")
 
 @app.route("/playlists")
@@ -69,5 +78,16 @@ def artistTracks(artistID):
     trackHTML += "</ul>"
     return trackHTML
 
+@app.route("/verifyData")
+def verifyData():
+    conn = getDBConnection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM spotify_data")
+    rows = cursor.fetchall()
+    data = [dict(row) for row in rows]
+    conn.close()
+    return jsonify(data)
+
 if __name__ == "__main__":
+    initDB()
     app.run(debug = True)

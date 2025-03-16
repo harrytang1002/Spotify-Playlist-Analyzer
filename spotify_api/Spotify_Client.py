@@ -146,3 +146,11 @@ def artistTopTracks(artistID):
     result = get(queryUrl, headers = headers)
     jsonResult = json.loads(result.content)["tracks"]
     return jsonResult
+
+def getUserProfile():
+    checkTokenExp()
+    url = "https://api.spotify.com/v1/me"
+    headers = getAuthHeader()
+    result = get(url, headers = headers)
+    jsonResult = json.loads(result.content)
+    return jsonResult

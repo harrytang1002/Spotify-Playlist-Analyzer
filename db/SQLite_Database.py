@@ -1,8 +1,11 @@
 import sqlite3
 from datetime import datetime
 
-conn = sqlite3.connect('spotify_data.db')
-cursor = conn.cursor()
+def getDBConnection():
+    connection = sqlite3.connect('spotify_data.db')
+    return connection
+
+conn = getDBConnection()
 
 def initDB():
     with sqlite3.connect("spotify_data.db") as conn:
@@ -42,7 +45,7 @@ def storeUserInfo(userProfile, tokens):
             userProfile.get("email"),
             tokens["access_token"],
             tokens["refresh_token"],
-            datetime.now().timestamp() + tokens["expires_in"]
+            tokens["token_expiration"]
         ))
 
 def storePlaylistMetadata(userID, playlists):
