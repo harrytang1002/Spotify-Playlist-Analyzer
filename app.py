@@ -12,6 +12,9 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
+with app.app_context():
+    initDB()
+
 @app.route("/")
 def index():
     return "Welcome to my Spotify App <a href = '/login'>Login with Spotify</a>"
@@ -89,5 +92,5 @@ def verifyData():
     return jsonify(data)
 
 if __name__ == "__main__":
-    initDB()
+    # initDB()
     app.run(debug = True)
