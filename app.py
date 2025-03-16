@@ -2,6 +2,7 @@ import base64
 import hashlib
 import os
 import secrets
+import sqlite3
 from dotenv import load_dotenv
 from flask import Flask, redirect, jsonify, request, session
 from db.SQLite_Database import initDB, storeUserInfo, storePlaylistMetadata, getDBConnection
@@ -84,6 +85,7 @@ def artistTracks(artistID):
 @app.route("/verifyData")
 def verifyData():
     conn = getDBConnection()
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM usersPlaylists")
     rows = cursor.fetchall()
