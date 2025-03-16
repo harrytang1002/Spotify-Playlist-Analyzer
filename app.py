@@ -85,7 +85,7 @@ def artistTracks(artistID):
 def verifyData():
     conn = getDBConnection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM spotify_data")
+    cursor.execute("SELECT * FROM usersPlaylists")
     rows = cursor.fetchall()
     data = [dict(row) for row in rows]
     conn.close()
