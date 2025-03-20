@@ -19,7 +19,7 @@
             let listElement = document.querySelector('.js-playlists-list');
             let playlistsListHTML = '';
             playlists.forEach(playlist => {
-                const innerHTML = `<li><a href='/analyze/${playlist.id}'>${playlist.name}</a></li>`;
+                const innerHTML = `<li><a class="css-playlists" href="/analyze/${playlist.id}">${playlist.name}</a></li>`;
                 playlistsListHTML += innerHTML;
             });
 

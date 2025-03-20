@@ -12,6 +12,12 @@ body {
     font-family: Helvetica;
 }
 
-.css-playlists-list {
+/* .css-playlists-list {
     text-decoration: none;
+} */
+
+.css-playlists {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
 }
