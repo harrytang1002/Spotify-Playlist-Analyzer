@@ -1,0 +1,47 @@
+.css-home-ref,
+.css-playlist-ref {
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+body {
+    background-color: #121212;
+    color: white;
+    font-family: Helvetica;
+}
+
+.css-welcome {
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.css-slogan {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.css-login-btn {
+    background-color: #1ed760;
+    color: black;
+    border: none;
+    border-radius: 30px;
+    font-size: 17px;
+    font-weight: bold;
+    text-align: center;
+    padding: 13px 20px;
+    position: absolute; 
+    top: 50%;		   
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.css-login-btn:hover {
+    background-color: #3be477;
+}
