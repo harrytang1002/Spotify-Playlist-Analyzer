@@ -8,19 +8,22 @@
 
 {% block content %}
     <h1 class="css-playlists-header">Your Playlists</h1>
-    <ul class="js-playlists-list css-playlists-list">
-
-    </ul>
+    <ul class="js-playlists-list css-playlists-list"></ul>
 {% endblock %}
 
 {% block scripts %}
     <script>
-        let listElement = document.querySelector('.js-playlists-list');
-        let playlistsListHTML = '';
-        playlists.forEach(playlist => {
-            const innerHTML = `<li><a href='/analyze/${playlist['id']}'>${playlist['name']}</a></li>`;
-            playlistsListHTML += innerHTML;
+        const playlists = JSON.parse('{{ playlists | tojson | safe }}');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let listElement = document.querySelector('.js-playlists-list');
+            let playlistsListHTML = '';
+            playlists.forEach(playlist => {
+                const innerHTML = `<li><a href='/analyze/${playlist.id}'>${playlist.name}</a></li>`;
+                playlistsListHTML += innerHTML;
+            });
+
+            listElement.innerHTML = playlistsListHTML;
         });
-        listElement.innerHTML = playlistsListHTML;
     </script>
 {% endblock %}
