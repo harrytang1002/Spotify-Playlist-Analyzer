@@ -1,0 +1,17 @@
+.css-home-ref,
+.css-playlist-ref {
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+body {
+    background-color: #121212;
+    color: white;
+    font-family: Helvetica;
+}
+
+.css-playlists-list {
+    text-decoration: none;
+}
