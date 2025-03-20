@@ -53,11 +53,12 @@ def callback():
 @app.route("/playlists")
 def playlists():
     userPlaylists = getUserPlaylist()
-    playlistHTML = "<h1>Your Playlists:</h1><ul>"
-    for playlist in userPlaylists:
-        playlistHTML += f"<li><a href = '/analyze/{playlist['id']}'>{playlist['name']}</a></li>"
-    playlistHTML += "</ul>"
-    return playlistHTML
+    return render_template("playlists.html", playlists=userPlaylists)
+    # playlistHTML = "<h1>Your Playlists:</h1><ul>"
+    # for playlist in userPlaylists:
+    #     playlistHTML += f"<li><a href = '/analyze/{playlist['id']}'>{playlist['name']}</a></li>"
+    # playlistHTML += "</ul>"
+    # return playlistHTML
 
 @app.route("/analyze/<playlistID>")
 def analyze(playlistID):

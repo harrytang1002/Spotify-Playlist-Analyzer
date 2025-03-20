@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Playlists - Spotify App{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/playlists.css') }}">
+{% endblock %}
+
+{% block content %}
+    <h1 class="css-playlists-header">Your Playlists</h1>
+    <ul class="js-playlists-list css-playlists-list">
+
+    </ul>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        let listElement = document.querySelector('.js-playlists-list');
+        let playlistsListHTML = '';
+        playlists.forEach(playlist => {
+            const innerHTML = `<li><a href='/analyze/${playlist['id']}'>${playlist['name']}</a></li>`;
+            playlistsListHTML += innerHTML;
+        });
+        listElement.innerHTML = playlistsListHTML;
+    </script>
+{% endblock %}
