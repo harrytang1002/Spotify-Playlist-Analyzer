@@ -4,7 +4,7 @@ import os
 import secrets
 import sqlite3
 from dotenv import load_dotenv
-from flask import Flask, redirect, jsonify, render_template,  request, session
+from flask import Flask, redirect, jsonify, render_template, request, session
 from db.SQLite_Database import initDB, storeUserInfo, storePlaylistMetadata, getDBConnection
 from spotify_api.Spotify_Client import authURL, getAccessToken, getUserPlaylist, getPlaylistTracks, analyzePlaylistGenres, artistTopTracks, getUserProfile
 
@@ -19,7 +19,6 @@ with app.app_context():
 @app.route("/")
 def index():
     return render_template("index.html")
-    # return "Welcome to my Spotify App <a href = '/login'>Login with Spotify</a>"
 
 @app.route("/login")
 def login():
@@ -38,6 +37,7 @@ def callback():
     if "code" in request.args:
         code = request.args["code"]
         getAccessToken(code)
+
         tokens = {
             "access_token" : session["access_token"], 
             "refresh_token" : session["refresh_token"],
@@ -95,5 +95,4 @@ def verifyData():
     return jsonify(data)
 
 if __name__ == "__main__":
-    # initDB()
     app.run(debug = True)

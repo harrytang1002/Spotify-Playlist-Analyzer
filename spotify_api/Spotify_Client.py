@@ -28,6 +28,8 @@ def authURL():
 
 def getAccessToken(code):
     url = "https://accounts.spotify.com/api/token"
+    print("hi")
+    print(session["code_verifier"])
     data = {
         "grant_type": "authorization_code",
         "code": code,
@@ -39,6 +41,7 @@ def getAccessToken(code):
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     result = post(url, headers = headers, data = data)
     jsonResult = json.loads(result.content)
+    
     session["access_token"] = jsonResult["access_token"]
     session["refresh_token"] = jsonResult["refresh_token"]
     session["token_expiration"] = datetime.now().timestamp() + jsonResult["expires_in"]
