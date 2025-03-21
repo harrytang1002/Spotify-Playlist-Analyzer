@@ -8,7 +8,8 @@
 
 {% block content %}
     <h1 class="css-playlists-header">Your Playlists</h1>
-    <ul class="js-playlists-list css-playlists-list"></ul>
+    <!-- <ul class="js-playlists-list css-playlists-list"></ul> -->
+    <div class="jss-card-grid css-card-grid"></div>
 {% endblock %}
 
 {% block scripts %}
@@ -19,7 +20,21 @@
             let listElement = document.querySelector('.js-playlists-list');
             let playlistsListHTML = '';
             playlists.forEach(playlist => {
-                const innerHTML = `<li><a class="css-playlists" href="/analyze/${playlist.id}">${playlist.name}</a></li>`;
+                // const innerHTML = `<li><a class="css-playlists" href="/analyze/${playlist.id}">${playlist.name}</a></li>`;
+                const innerHTML = `
+                    <a class="css-playlist" href="/analyze/${playlist.id}">
+                        <div class="css-card">
+                            <img src="${playlist.images[0].url}" alt="Playlist Cover" style="width:100%">
+                            <div class="css-card-info">
+                                <p class="css-playlist-name">
+                                    ${playlist.name}
+                                </p>
+                                <p class="css-track-count">
+                                    ${playlist.tracks.total}
+                                </p>
+                            </div>
+                        </div>
+                    </a>`;
                 playlistsListHTML += innerHTML;
             });
 
