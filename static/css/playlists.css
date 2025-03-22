@@ -24,4 +24,12 @@ body {
 .css-card {
     background: gray;
     border-radius: 20px;
+    text-align: center;
+}
+
+.css-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
