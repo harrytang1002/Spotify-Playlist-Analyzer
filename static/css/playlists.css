@@ -18,7 +18,8 @@ body {
 
 .css-playlist {
     text-decoration: none;
-    color: white;
+    color: inherit;
+    display: inline-block;
 }
 
 .css-card {

@@ -22,8 +22,8 @@
             playlists.forEach(playlist => {
                 // const innerHTML = `<li><a class="css-playlists" href="/analyze/${playlist.id}">${playlist.name}</a></li>`;
                 const innerHTML = `
+                    <a class="css-playlist" href="/analyze/${playlist.id}">
                         <div class="css-card">
-                            <a class="css-playlist" href="/analyze/${playlist.id}">
                             <img src="${playlist.images[0].url}" alt="Playlist Cover">
                             <div class="css-card-info">
                                 <p class="css-playlist-name">
@@ -33,8 +33,8 @@
                                     Tracks: ${playlist.tracks.total}
                                 </p>
                             </div>
-                            </a>
-                        </div>`;
+                        </div>
+                    </a>`;
                 playlistsListHTML += innerHTML;
             });
 
