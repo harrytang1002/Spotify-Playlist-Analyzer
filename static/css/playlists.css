@@ -19,15 +19,17 @@ body {
 .css-playlist {
     text-decoration: none;
     color: inherit;
-    display: inline-block;
+    display: block;
+    width: 220px;
+    height: 280px;
 }
 
 .css-card {
     background: gray;
     border-radius: 15px;
     align-items: center;
-    width: 220px;
-    height: 280px;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -46,4 +48,5 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     padding: 20px;
+    justify-content: center;
 }
