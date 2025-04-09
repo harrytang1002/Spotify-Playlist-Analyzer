@@ -6,6 +6,7 @@ It provides insights such as artist genres, artist popularity, and more.
 ## Live Demo
 
 Check out the app here: [Spotify Playlist Analyzer on Render](https://spotify-playlist-analyzer-tgt7.onrender.com)
+
 \*\* Note: App is currently in development mode so not all users can experience this demo unless they have been added to the User Management list of the app through Spotify.
 
 ## Features
