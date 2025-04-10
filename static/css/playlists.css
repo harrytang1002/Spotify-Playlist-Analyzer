@@ -36,12 +36,11 @@ body {
 }
 
 .css-card img {
-    width: 100%;
+    width: 90%;
     height: 150px;
     object-fit: cover;
-    padding-top: 15px;
-    margin: 15px;
-    border-radius: 30px;
+    margin-top: 15px;
+    border-radius: 12px;
 }
 
 .css-card-grid {
