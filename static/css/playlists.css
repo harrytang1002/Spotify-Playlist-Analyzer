@@ -51,3 +51,8 @@ body {
     gap: 20px;
     padding: 20px;
 }
+
+.css-card-info {
+    text-align: center;
+    font-weight: bold;
+}
