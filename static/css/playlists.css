@@ -40,7 +40,8 @@ body {
     height: 150px;
     object-fit: cover;
     padding-top: 15px;
-    border-radius: 12px;
+    margin: 15px;
+    border-radius: 30px;
 }
 
 .css-card-grid {
