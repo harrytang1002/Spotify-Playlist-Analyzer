@@ -94,6 +94,6 @@ def storePlaylistTracks(playlistID):
 def getStoredTracks(playlistID):
     with sqlite3.connect("spotify_data.db") as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT track_name, artist_name FROM playlistTracks WHERE playlist_id = ?", (playlistID))
+        cursor.execute("SELECT track_name, artist_name FROM playlistTracks WHERE playlist_id = ?", (playlistID,))
         rows = cursor.fetchall()
-        return [{"name": name, "artists": [{"name": artist}]} for name, artist in rows]
+        return [{"track": {"name": name, "artists": [{"name": artist}]}} for name, artist in rows]
