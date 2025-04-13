@@ -5,7 +5,7 @@ import secrets
 import sqlite3
 from dotenv import load_dotenv
 from flask import Flask, redirect, jsonify, render_template, request, session
-from db.SQLite_Database import initDB, storeUserInfo, storePlaylistMetadata, getDBConnection
+from db.SQLite_Database import initDB, storeUserInfo, storePlaylistMetadata, getDBConnection, storePlaylistTracks, getStoredTracks
 from spotify_api.Spotify_Client import authURL, getAccessToken, getUserPlaylist, getPlaylistTracks, analyzePlaylistGenres, artistTopTracks, getUserProfile
 
 load_dotenv()
@@ -47,6 +47,8 @@ def callback():
         userPlaylists = getUserPlaylist()
         storeUserInfo(userProfile, tokens)
         storePlaylistMetadata(userProfile["id"], userPlaylists)
+        for playlists in userPlaylists:
+            storePlaylistTracks(playlists["id"])
 
     return redirect("/playlists")
 
@@ -54,15 +56,13 @@ def callback():
 def playlists():
     userPlaylists = getUserPlaylist()
     return render_template("playlists.html", playlists=userPlaylists)
-    # playlistHTML = "<h1>Your Playlists:</h1><ul>"
-    # for playlist in userPlaylists:
-    #     playlistHTML += f"<li><a href = '/analyze/{playlist['id']}'>{playlist['name']}</a></li>"
-    # playlistHTML += "</ul>"
-    # return playlistHTML
 
 @app.route("/analyze/<playlistID>")
 def analyze(playlistID):
-    tracks = getPlaylistTracks(playlistID)
+    # tracks = getPlaylistTracks(playlistID)
+    storedTracks = getStoredTracks(playlistID)
+    if storedTracks:
+        tracks = storedTracks
     sortedGenreMap, artistIDList = analyzePlaylistGenres(tracks)
     analysisHTML = "<h1>Top Genres in Playlist:</h1>"
     for i, (genre, data) in enumerate(sortedGenreMap.items(), start = 1):

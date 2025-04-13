@@ -1,4 +1,5 @@
 import sqlite3
+from spotify_api.Spotify_Client import getPlaylistTracks
 from datetime import datetime
 
 def getDBConnection():
@@ -6,6 +7,7 @@ def getDBConnection():
     return connection
 
 conn = getDBConnection()
+conn.execute("PRAGMA foreign_keys = ON")
 
 def initDB():
     with sqlite3.connect("spotify_data.db") as conn:
@@ -29,6 +31,16 @@ def initDB():
                 playlist_name TEXT,
                 total_tracks INTEGER,
                 FOREIGN KEY(user_id) REFERENCES users(user_id)
+            );
+        """)
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS playlistTracks (
+                playlist_id TEXT PRIMARY KEY,
+                track_id TEXT,
+                track_name TEXT,
+                artist_name TEXT,
+                FOREIGN KEY(playlist_id) REFERENCES userPlaylists(playlist_id) ON DELETE CASCADE
             );
         """)
 
@@ -61,3 +73,27 @@ def storePlaylistMetadata(userID, playlists):
                 playlist["name"],
                 playlist["tracks"]["total"]
             ))
+
+def storePlaylistTracks(playlistID):
+    tracks = getPlaylistTracks(playlistID)
+    with sqlite3.connect("spotify_data.db") as conn:
+        cursor = conn.cursor()
+        for track in tracks:
+            if track["track"] is None:
+                continue
+            cursor.execute("""
+                INSERT OR REPLACE INTO playlistTracks
+                VALUES (?, ?, ?, ?)
+            """, (
+                playlistID,
+                track["track"]["id"],
+                track["track"]["name"],
+                track["track"]["artists"][0]["name"],
+            ))
+
+def getStoredTracks(playlistID):
+    with sqlite3.connect("spotify_data.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT track_name, artist_name FROM playlistTracks WHERE playlist_id = ?", (playlistID))
+        rows = cursor.fetchall()
+        return [{"name": name, "artists": [{"name": artist}]} for name, artist in rows]
