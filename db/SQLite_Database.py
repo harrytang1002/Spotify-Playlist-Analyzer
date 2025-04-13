@@ -96,4 +96,5 @@ def getStoredTracks(playlistID):
         cursor = conn.cursor()
         cursor.execute("SELECT track_name, artist_name FROM playlistTracks WHERE playlist_id = ?", (playlistID,))
         rows = cursor.fetchall()
+        print("Retrieved stored tracks:", rows)
         return [{"track": {"name": name, "artists": [{"name": artist}]}} for name, artist in rows]

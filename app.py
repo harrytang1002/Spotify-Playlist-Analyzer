@@ -3,6 +3,7 @@ import hashlib
 import os
 import secrets
 import sqlite3
+import traceback
 from dotenv import load_dotenv
 from flask import Flask, redirect, jsonify, render_template, request, session
 from db.SQLite_Database import initDB, storeUserInfo, storePlaylistMetadata, getDBConnection, storePlaylistTracks, getStoredTracks
@@ -59,21 +60,28 @@ def playlists():
 
 @app.route("/analyze/<playlistID>")
 def analyze(playlistID):
-    # tracks = getPlaylistTracks(playlistID)
-    storedTracks = getStoredTracks(playlistID)
-    if storedTracks:
-        tracks = storedTracks
-    sortedGenreMap, artistIDList = analyzePlaylistGenres(tracks)
-    analysisHTML = "<h1>Top Genres in Playlist:</h1>"
-    for i, (genre, data) in enumerate(sortedGenreMap.items(), start = 1):
-        analysisHTML += f"<h3>{i}. {genre}</h3>"
-        analysisHTML += "<p>Artists: " + ', '.join(artist[0] for artist in data[1:]) + "</p>"
+    try:
+        # tracks = getPlaylistTracks(playlistID)
+        storedTracks = getStoredTracks(playlistID)
+        if storedTracks:
+            tracks = storedTracks
+        else:
+            return "No stored tracks found.", 404
+        sortedGenreMap, artistIDList = analyzePlaylistGenres(tracks)
+        analysisHTML = "<h1>Top Genres in Playlist:</h1>"
+        for i, (genre, data) in enumerate(sortedGenreMap.items(), start = 1):
+            analysisHTML += f"<h3>{i}. {genre}</h3>"
+            analysisHTML += "<p>Artists: " + ', '.join(artist[0] for artist in data[1:]) + "</p>"
 
-    analysisHTML += "<h2>Select an Artist to View Top Tracks:</h2><ul>"
-    for artist in artistIDList:
-        analysisHTML += f'<li><a href="/artist/{artistIDList[artist]}">{artist}</a></li>'
-    analysisHTML += "</ul>"
-    return analysisHTML
+        analysisHTML += "<h2>Select an Artist to View Top Tracks:</h2><ul>"
+        for artist in artistIDList:
+            analysisHTML += f'<li><a href="/artist/{artistIDList[artist]}">{artist}</a></li>'
+        analysisHTML += "</ul>"
+        return analysisHTML
+    
+    except Exception as e:
+        traceback.print_exc()
+        return f"An error occurred: {e}", 500
 
 @app.route("/artist/<artistID>")
 def artistTracks(artistID):
