@@ -34,8 +34,6 @@ def initDB():
             );
         """)
 
-        # cursor.execute("DROP TABLE IF EXISTS playlistTracks;")
-
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS playlistTracks (
                 playlist_id TEXT,
@@ -103,7 +101,7 @@ def getStoredTracks(playlistID):
             SELECT track_name, artist_name, artist_id FROM playlistTracks WHERE playlist_id = ?
         """, (playlistID,))
         rows = cursor.fetchall()
-        print("Retrieved stored tracks:", rows)
+        print(f"Retrieved {len(rows)} tracks from the database for playlist {playlistID}")
         return [{
             "track": {
                 "name": name, 
