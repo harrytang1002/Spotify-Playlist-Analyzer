@@ -116,9 +116,15 @@ def analyzePlaylistGenres(tracks):
     genreMap = defaultdict(lambda:[0])
 
     for track in tracks:
-        artistID = track["track"]["artists"][0]["id"]
-        artistGenre, artistName, artistPopularity = getArtistGenre(artistID)
-        artistIDList[artistName] = artistID
+        print(f"Analyzing track: {track['track']['name']}")
+        print(f"Artist info: {track['track']['artists'][0]}")
+        try:
+            artistID = track["track"]["artists"][0]["id"]
+            artistGenre, artistName, artistPopularity = getArtistGenre(artistID)
+            artistIDList[artistName] = artistID
+        except Exception as e:
+            print(f"Error getting artist genre for artistID {artistID}: {e}")
+            continue
         for genres in artistGenre:
             genreMap[genres][0] += 1
             if [artistName, artistPopularity] not in genreMap[genres]:
