@@ -34,13 +34,16 @@ def initDB():
             );
         """)
 
+        # cursor.execute("DROP TABLE IF EXISTS playlistTracks;")
+
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS playlistTracks (
-                playlist_id TEXT PRIMARY KEY,
+                playlist_id TEXT,
                 track_id TEXT,
                 track_name TEXT,
                 artist_name TEXT,
                 artist_id TEXT,
+                PRIMARY KEY (playlist_id, track_id),
                 FOREIGN KEY(playlist_id) REFERENCES userPlaylists(playlist_id) ON DELETE CASCADE
             );
         """)
