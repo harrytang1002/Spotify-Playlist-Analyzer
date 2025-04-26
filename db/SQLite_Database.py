@@ -84,7 +84,7 @@ def storePlaylistTracks(playlistID):
                 continue
             cursor.execute("""
                 INSERT OR REPLACE INTO playlistTracks
-                VALUES (?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?)
             """, (
                 playlistID,
                 track["track"]["id"],
