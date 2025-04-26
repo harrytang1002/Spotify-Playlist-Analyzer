@@ -40,6 +40,7 @@ def initDB():
                 track_id TEXT,
                 track_name TEXT,
                 artist_name TEXT,
+                artist_id TEXT,
                 FOREIGN KEY(playlist_id) REFERENCES userPlaylists(playlist_id) ON DELETE CASCADE
             );
         """)
@@ -89,12 +90,19 @@ def storePlaylistTracks(playlistID):
                 track["track"]["id"],
                 track["track"]["name"],
                 track["track"]["artists"][0]["name"],
+                track["track"]["artists"][0]["id"],
             ))
 
 def getStoredTracks(playlistID):
     with sqlite3.connect("spotify_data.db") as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT track_name, artist_name FROM playlistTracks WHERE playlist_id = ?", (playlistID,))
+        cursor.execute("""
+            SELECT track_name, artist_name, artist_id FROM playlistTracks WHERE playlist_id = ?
+        """, (playlistID,))
         rows = cursor.fetchall()
         print("Retrieved stored tracks:", rows)
-        return [{"track": {"name": name, "artists": [{"name": artist}]}} for name, artist in rows]
+        return [{
+            "track": {
+                "name": name, 
+                "artists": [{"name": artist_name, "id": artist_id}]}
+                } for name, artist_name, artist_id in rows]
